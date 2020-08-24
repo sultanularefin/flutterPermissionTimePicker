@@ -1,8 +1,13 @@
 
 
+
+
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:timePickerTest/FlutterBlueApp.dart';
+import 'package:timePickerTest/PermissionPage.dart';
+
 
 
 void main() {
@@ -39,8 +44,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+
+
   int _counter = 0;
   int _totalCount = 0;
+
+//  PermissionStatus _permissionStatus;
+  PermissionStatus _permissionStatus = PermissionStatus.undetermined;
 
   void _incrementCounter() {
     setState(() {
@@ -69,6 +80,134 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
+  Widget permissionButton(BuildContext context){
+    var logger = Logger();
+
+    logger.d("Logger is working!");
+
+    return Container(
+//                                                                        width:60,
+
+      color:Colors.pinkAccent,
+      width: displayWidth(
+          context) / 2,
+      height: displayHeight(context) / 12,
+      alignment: Alignment.center,
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+
+      child: OutlineButton(
+        onPressed: () async {
+
+//          final Permission permission= Permission.contacts;
+          final Permission permission= Permission.camera;
+          print('at Future<void> requestPermission $permission');
+
+          final status = await permission.request();
+
+          print('status: $status');
+
+          switch (status) {
+            case PermissionStatus.granted:
+              print('PermissionStatus.granted');
+            // do something
+              break;
+            case PermissionStatus.denied:
+              print('PermissionStatus.denied');
+            // do something
+              break;
+            case PermissionStatus.restricted:
+              print('PermissionStatus.restricted');
+            // do something
+              break;
+            case PermissionStatus.permanentlyDenied:
+              print('PermissionStatus.permanentlyDenied');
+            // do something
+              break;
+            case PermissionStatus.undetermined:
+              print('PermissionStatus.undetermined');
+            // do something
+              break;
+            default:
+          }
+
+          setState(() {
+            print(status);
+
+
+            _permissionStatus = status;
+
+            if (status == PermissionStatus.granted) {
+               logger.i('permission was granted: permission was granted');
+            }
+
+
+
+
+            print(_permissionStatus);
+          });
+
+
+//          final Permission _permissionHandler = Permission();
+//          var result = await _permissionHandler.requestPermissions([PermissionGroup.contacts]);
+
+
+        },
+
+
+//        clipBehavior: Clip.hardEdge,
+        splashColor: Color(0xffFEE295),
+
+        highlightElevation: 12,
+        child:
+        Container(
+
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 0 /*15*/),
+          width: displayWidth(context)/3,
+          height: displayHeight(context) / 14,
+          color:Colors.lightGreenAccent,
+
+
+          child: Row(
+
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+
+//                                          height: 25,
+                height: displayHeight(context) / 40,
+                width: 5,
+                margin: EdgeInsets.only(left: 0),
+
+                child: Icon(
+//                                          Icons.add_shopping_cart,
+                  Icons.watch_later,
+                  size: 28,
+                  color: Color(0xffBCBCBD),
+                ),
+
+
+              ),
+
+              Container(
+                alignment: Alignment.center,
+                width: displayWidth(context) / 4.5,
+//                                        color:Colors.purpleAccent,
+                // do it in both Container
+                child: Text('Request Permission..'),
+
+              )
+
+
+            ],
+          ),
+        ),
+      ),
+    );
+
+
+
+  }
 
   Widget shoppingCartWidget(BuildContext context){
 
@@ -190,31 +329,60 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headline4,
             ),
 
+
+
             Container(
                 width: displayWidth(context)/2,
                 child: shoppingCartWidget(context)
             ),
 
-            Center(
-              child: ListView(
-                  children: Permission.values
-                      .where((Permission permission) {
-                    if (Platform.isIOS) {
-                      return permission != Permission.unknown &&
-                          permission != Permission.sms &&
-                          //permission != Permission.storage &&
-                          permission != Permission.ignoreBatteryOptimizations &&
-                          permission != Permission.accessMediaLocation;
-                    } else {
-                      return permission != Permission.unknown &&
-                          permission != Permission.mediaLibrary &&
-                          permission != Permission.photos &&
-                          permission != Permission.reminders;
-                    }
-                  })
-                      .map((permission) => PermissionWidget(permission))
-                      .toList()),
+            Container(
+                width: displayWidth(context)/2,
+                child: permissionButton(context)
             ),
+
+
+
+
+            SizedBox(height: 30),
+
+            Center(
+              child: RaisedButton(
+                child: Text('Open route Permissions Page'),
+                onPressed: () {
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PermissionPage()),
+                  );
+
+
+                  // Navigate to second route when tapped.
+                },
+              ),
+            ),
+
+
+
+            Center(
+              child: RaisedButton(
+                child: Text('Open route Flutter Blue App'),
+                onPressed: () {
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FlutterBlueApp()),
+                  );
+
+
+                  // Navigate to second route when tapped.
+                },
+              ),
+            ),
+
+
+
+
           ],
         ),
       ),
@@ -226,3 +394,5 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+
