@@ -1,12 +1,17 @@
 
 
 
+import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:timePickerTest/FlutterBlueApp.dart';
 import 'package:timePickerTest/PermissionPage.dart';
+import 'package:system_shortcuts/system_shortcuts.dart';
 
 
 
@@ -45,10 +50,22 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  // static const platform = const MethodChannel('samples.flutter.dev/battery');
+
+  static const platform = const MethodChannel('com.example.timePickerTest');
+
+
+
+// SSSS
+
 
 
   int _counter = 0;
   int _totalCount = 0;
+
+  bool blueToothState = false;
+  bool wiFiState = false;
+
 
 //  PermissionStatus _permissionStatus;
   PermissionStatus _permissionStatus = PermissionStatus.undetermined;
@@ -59,6 +76,61 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
   }
+
+
+
+  @override
+  void initState(){
+
+
+
+    localStorageCheck();
+
+
+    super.initState();
+
+  }
+
+  // Get battery level.
+  String _batteryLevel = 'Unknown battery level.';
+
+  Future<void> _getBatteryLevel() async {
+    String batteryLevel;
+    try {
+      final int result = await platform.invokeMethod('getBatteryLevel');
+      batteryLevel = 'Battery level at $result % .';
+    } on PlatformException catch (e) {
+      batteryLevel = "Failed to get battery level: '${e.message}'.";
+    }
+
+    setState(() {
+      _batteryLevel = batteryLevel;
+    });
+  }
+
+
+  // Future<void> return type .  ??
+  Future<void> localStorageCheck () async{
+
+
+
+   bool blueTooth= await SystemShortcuts.checkBluetooth;// return true/false
+   bool wifi =   await SystemShortcuts.checkWifi;// return true/false
+
+
+   setState(() {
+     wiFiState = wifi;
+     blueToothState = blueTooth;
+   });
+
+  }
+
+
+
+
+
+
+
 
 
   Size displaySize(BuildContext context) {
@@ -298,6 +370,27 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
+
+    var logger = Logger();
+
+    logger.d("Logger is working!");
+
+
+    // wiFiState = wifi;
+    // blueToothState = blueTooth;
+
+    print('wiFiState: $wiFiState');
+    print('blueToothState: $blueToothState');
+
+    // print('blueToothState: $blueToothState');
+
+    logger.w('wiFiState: $wiFiState');
+    logger.w('blueToothState: $blueToothState');
+
+
+
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -312,7 +405,6 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-
 
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -379,6 +471,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
             ),
+
+
+
+            RaisedButton(
+              child: Text('Get Battery Level'),
+              onPressed: _getBatteryLevel,
+            ),
+
+
+            Text(_batteryLevel),
 
 
 
