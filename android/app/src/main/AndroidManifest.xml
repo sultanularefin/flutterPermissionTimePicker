@@ -6,40 +6,37 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
 
+
+<!--    <uses-feature android:name="android.hardware.camera" android:required="true" />-->
+    <uses-feature android:name="android.hardware.Bluetooth" android:required="true" />
+    <uses-feature android:name="android.hardware.location"  android:required="true" />
+
+
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
-
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-
-
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-
-
-
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
 
 
 
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.RECORD_VIDEO"/>
 
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
-    <uses-feature android:name="android.hardware.Bluetooth" android:required="true" />
+
+
+
+
+<!--    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>-->
+<!--    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>-->
+<!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>-->
+<!--    <uses-permission android:name="android.permission.CAMERA"/>-->
+<!--    <uses-permission android:name="android.permission.RECORD_AUDIO" />-->
+<!--    <uses-permission android:name="android.permission.RECORD_VIDEO"/>-->
+
+
 
 
     <application
